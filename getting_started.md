@@ -70,9 +70,4 @@ sudo restart ironmq
 sudo restart ironauth
 ```
 
-## Upgrading
-
-- Get the latest zip package and unzip it
-- Run `./iron install`
-- Run `sudo restart ironauth`
-- Run `sudo restart ironmq`
+See [Upgrading](upgrading.md) for instructions on how to upgrade to a newer version. 
