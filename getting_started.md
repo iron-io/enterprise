@@ -4,6 +4,10 @@
 
 ### 1. Unpack the provided archive
 
+```
+unzip ironmq-x.y.z....zip
+```
+
 You will end up with a directory called `ironmq`, cd into that directory to
 continue. 
 
