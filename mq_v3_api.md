@@ -1,6 +1,12 @@
 ## Changes
 
-Changes:
+TODO: 
+batch delete
+peek
+webhook
+
+
+Changes from v2:
 
 - Per-message expirations turn into per-queue expirations
 - Timed out and released messages go to the front of the queue. (This
@@ -31,16 +37,13 @@ cause some tests to fail.)
   2. [Post Message via Webhook](#post-message-via-webhook)
   2. [Reserve/Get Messages](#reserve-messages) - Core operation to get message(s) off the queue.
   2. [Get Message by Id](#get-message-by-id)
+  2. [Peek Messages](#peek-messages) - View first messages in queue without reserving them
   3. [Delete Message](#delete-message) - Core operation to delete a message after it's been processed
-  2. [Release Message](#release-message)
-  3. [Touch Message](#touch-message)
+  3. [Delete Messages](#delete-messages) - Batch delete
+  2. [Release Message](#release-message) - Makes a message available for another process
+  3. [Touch Message](#touch-message) - Extends the timeout period so process can finish processing message
   3. [Clear Messages](#clear-messages) - Removes all messages from a queue
 
-TODO:
-
-- I feel like we don't really need the extra reservations section? Those operations just require a reservation_id
-- Batch Post/Get/Delete
-- Peek
 
 ## Global Stuff
 
@@ -345,6 +348,30 @@ there are no alerts.
 }
 ```
 
+### Peek Messages
+
+GET `/queues/{queue_name}/messages`
+
+Request:
+
+```json
+{}
+```
+
+Response: 200
+
+Some fields will not be included if they are not applicable like `push` if it's not a push queue and `alerts` if
+there are no alerts.
+
+```json
+{
+  "messages": [
+    {
+       "TODO": "SAME AS GET MESSAGE BY ID"
+  ]
+}
+```
+
 ### Delete Message
 
 DELETE `/queues/{queue_name}/messages/{message_id}`
@@ -397,6 +424,47 @@ Response: 200 or 404
   "msg": "Messages deleted."
 }
 ```
+
+### Touch Message
+
+DELETE `/queues/{queue_name}/messages/{message_id}/touch`
+
+Request:
+
+```json
+{}
+```
+
+Response: 200 or 404
+
+```json
+{
+  "msg": "Message touched."
+}
+```
+
+
+### Release Message
+
+DELETE `/queues/{queue_name}/messages/{message_id}/release`
+
+Request:
+
+```json
+{
+  "delay": 60
+}
+```
+
+Response: 200 or 404
+
+```json
+{
+  "msg": "Message released."
+}
+```
+
+
 
 ### Clear Messages
 
