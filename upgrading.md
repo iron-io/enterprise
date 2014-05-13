@@ -18,7 +18,7 @@ sudo stop ironauth
 ## Start services again
 
 ```
-sudo restart ironauth
-sudo restart ironmq
+sudo start ironauth
+sudo start ironmq
 ```
 
