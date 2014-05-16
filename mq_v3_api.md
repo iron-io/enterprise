@@ -130,8 +130,7 @@ there are no alerts.
     "created_at": "2014-12-19T16:39:57-08:00",
     "updated_at": "2014-12-19T16:39:57-08:00",
     "timeout": 60,
-    "expires_in": 3600,
-    "expires_at": "2014-12-19T16:39:57-08:00",
+    "expire_time": 604800,
     "push":{
       "type": "multicast",
       "subscribers": [
