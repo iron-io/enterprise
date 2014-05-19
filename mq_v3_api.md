@@ -65,7 +65,7 @@ Headers:
 
 ### Create Queue
 
-POST `/queues`
+POST `/queues/{queue_name}`
 
 Request:
 
