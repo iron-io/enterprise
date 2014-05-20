@@ -65,7 +65,7 @@ Headers:
 
 ### Create Queue
 
-POST `/queues`
+POST `/queues/{queue_name}`
 
 Request:
 
@@ -79,7 +79,7 @@ A `push` queue cannot have alerts.
 {
   "queue": {
     "timeout": 60,
-    "expires_in": 3600,
+    "expire_time": 3600,
     "push":{
       "type": "multicast",
       "subscribers": [
