@@ -197,7 +197,7 @@ Lists queues in alphabetical order.
 
 Query Parameters:
 
-- per_page - TODO: what's default?
+- per_page - number of elements in response, default is 30.
 - previous - this is the last queue on the previous page, it will start from the next one.
 
 Request:
@@ -240,8 +240,7 @@ Request:
   "messages": [
     {
       "body": "This is my message 1.",
-      "delay": 0,
-      "timeout": "todo: this may be a queue level thing now?"
+      "delay": 0
     }
   ]
 }
@@ -254,9 +253,9 @@ Returns a list of message ids in the same order as they were sent in.
 ```json
 {
   "ids": [
-    "abc123"
+    "2605601678238811215"
   ],
-  "msg": "Messages posted to queue."
+  "msg": "Messages put on queue."
 }
 ```
 
