@@ -182,7 +182,7 @@ Response: 200 or 404
 
 ```json
 {
-  "msg": "Queue deleted."
+  "msg": "Deleted"
 }
 ```
 
