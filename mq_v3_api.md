@@ -363,8 +363,6 @@ Request:
 
 - reservation_id: This id is returned when you [reserve a message](#reserve-messages) and must be provided to delete a message that is reserved. If a reservation times out, this will return an error when deleting so the worker knows that some other worker will be processing this message and can rollback or react accordingly.
 
-TODO: should reservation_id be optional? if not included, a message can be deleted as long as it's not reserved. This is how marconi works.
-
 ```json
 {
   "ids": [
