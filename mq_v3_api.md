@@ -386,19 +386,21 @@ Response: 200 or 404
 
 ### Touch Message
 
-DELETE `/queues/{queue_name}/messages/{message_id}/touch`
+POST `/queues/{queue_name}/messages/{message_id}/touch`
 
 Request:
 
 ```json
-{}
+{
+  "reservation_id": "5259a40cf166faa76a23f7450daaf497"
+}
 ```
 
 Response: 200 or 404
 
 ```json
 {
-  "msg": "Message touched."
+  "msg": "Touched"
 }
 ```
 
