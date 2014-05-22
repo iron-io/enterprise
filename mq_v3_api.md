@@ -407,12 +407,13 @@ Response: 200 or 404
 
 ### Release Message
 
-DELETE `/queues/{queue_name}/messages/{message_id}/release`
+POST `/queues/{queue_name}/messages/{message_id}/release`
 
 Request:
 
 ```json
 {
+  "reservation_id": "5259a40cf166faa76a23f7450daaf497",
   "delay": 60
 }
 ```
@@ -421,7 +422,7 @@ Response: 200 or 404
 
 ```json
 {
-  "msg": "Message released."
+  "msg": "Released"
 }
 ```
 
