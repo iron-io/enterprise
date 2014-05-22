@@ -111,10 +111,6 @@ SAME AS GET QUEUE INFO
 
 GET `/queues/{queue_name}`
 
-Request:
-
-{}
-
 Response: 200 or 404
 
 Some fields will not be included if they are not applicable like `push` if it's not a push queue and `alerts` if
@@ -195,18 +191,10 @@ GET `/queues`
 
 Lists queues in alphabetical order.
 
-Query Parameters:
+Request:
 
 - per_page - number of elements in response, default is 30.
 - previous - this is the last queue on the previous page, it will start from the next one.
-
-Request:
-
-```json
-{
-}
-```
-
 
 Response: 200 or 404
 
@@ -297,12 +285,6 @@ Will return an empty array if no messages are available in queue.
 
 GET `/queues/{queue_name}/messages/{message_id}`
 
-Request:
-
-```json
-{}
-```
-
 Response: 200
 
 Some fields will not be included if they are not applicable like `push` if it's not a push queue and `alerts` if
@@ -331,9 +313,7 @@ GET `/queues/{queue_name}/messages`
 
 Request:
 
-```json
-{}
-```
+- n: The maximum number of messages to peek. Default is 1. Maximum is 100. Note: You may not receive all n messages on every request, the more sparse the queue, the less likely you are to receive all n messages.
 
 Response: 200
 
