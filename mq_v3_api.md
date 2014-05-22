@@ -368,8 +368,10 @@ Request:
 ```json
 {
   "ids": [
-    "id": 123,
-    "reservation_id": "abc"
+    {
+      "id": 123,
+      "reservation_id": "abc"
+    }
   ]
 }
 ```
@@ -378,7 +380,7 @@ Response: 200 or 404
 
 ```json
 {
-  "msg": "Messages deleted."
+  "msg": "Deleted."
 }
 ```
 
