@@ -435,15 +435,13 @@ This will remove all messages from a queue.
 Request:
 
 ```json
-{
-
-}
+{}
 ```
 
 Response: 200 or 404
 
 ```json
 {
-  "msg": "Queue cleared."
+  "msg": "Cleared"
 }
 ```
