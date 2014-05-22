@@ -223,25 +223,6 @@ there are no alerts.
 
 SAME AS GET QUEUE INFO
 
-### Delete Queue
-
-DELETE `/queues/{queue_id}`
-
-Request:
-
-```json
-{}
-```
-
-Response: 200 or 404
-
-```json
-{
-  "msg": "Queue deleted."
-}
-```
-
-
 
 
 
