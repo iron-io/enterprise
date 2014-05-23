@@ -17,7 +17,8 @@ cause some tests to fail.)
 - All object structures changed a bit, please review json.
 - Clear messages endpoint changed to be part of delete messages.
 - Can no longer set timeout when posting a message, only when reserving one.
-- webhook url is no longer /queues/{queue_name}/messages/webhook, it's now /queues/{queue_name}/webhook
+- Webhook url is no longer /queues/{queue_name}/messages/webhook, it's now /queues/{queue_name}/webhook
+- Pagination principle in List Queues changed. It doesn’t support `page` parameter. You should specify the name of queue prior to the first desirable queue in result.
 
 ## Contents
 
@@ -196,7 +197,7 @@ Lists queues in alphabetical order.
 Request:
 
 - per_page - number of elements in response, default is 30.
-- previous - this is the last queue on the previous page, it will start from the next one.
+- previous - this is the last queue on the previous page, it will start from the next one. If queue with specified name doesn’t exist result will contain first `per_page` queues that lexicographically greater than `previous`
 
 Response: 200 or 404
 
