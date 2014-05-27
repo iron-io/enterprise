@@ -24,6 +24,23 @@ response: {
 code: 200 OR 403
 ```
 
+#### Login
+
+HEADER: application/json ( no token / oauth )
+
+```json
+POST /1/authentication
+
+request: {
+  email: <email>,
+  password: <password>
+}
+
+response: {
+  user object
+}
+```
+
 All other endpoints require ```Authorization``` HEADER
 
 #### Users
