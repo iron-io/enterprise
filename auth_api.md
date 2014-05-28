@@ -9,6 +9,7 @@ Objects (json)
 
 not all fields are required, TODO document required fields
 
+```
 <token> {
   "\_id"
   "user\_id"
@@ -17,7 +18,9 @@ not all fields are required, TODO document required fields
   "token"
   "admin"               bool
 }
+```
 
+```
 <project> {
   "id"
   "user\_id"
@@ -34,7 +37,9 @@ not all fields are required, TODO document required fields
   "flags"                 map[string]bool
   "shared\_with"          []id
 }
+```
 
+```
 <user> {
   "user\_id"
   "email"
@@ -44,6 +49,7 @@ not all fields are required, TODO document required fields
   "plan\_worker"
   "flags"                 map[string]interface{}
 }
+```
 
 
 Endpoints
@@ -56,7 +62,7 @@ HEADER:  ```Authorization``` alternatively (add query string of ```oauth```)
 Request Query String:  ```project_id```
 
 
-```json
+```
 GET /1/authentication
 
 response: {
@@ -70,7 +76,7 @@ code: 200 OR 403
 
 HEADER: application/json ( no token / oauth )
 
-```json
+```
 POST /1/authentication
 
 request: {
