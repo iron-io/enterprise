@@ -80,8 +80,8 @@ A `push` queue cannot have alerts.
   "queue": {
     "timeout": 60,
     "expires_in": 3600,
+    "type": "pull/unicast/multicast"
     "push":{
-      "type": "multicast",
       "subscribers": [
         {
           "url": "http://mysterious-brook-1807.herokuapp.com/ironmq_push_1",
@@ -132,8 +132,8 @@ there are no alerts.
     "timeout": 60,
     "expires_in": 3600,
     "expires_at": "2014-12-19T16:39:57-08:00",
+    "type": "pull/unicast/multicast",
     "push":{
-      "type": "multicast",
       "subscribers": [
         {
           "url": "http://mysterious-brook-1807.herokuapp.com/ironmq_push_1",
