@@ -72,25 +72,28 @@ Request:
 
 All fields are optional.
 
+`type` can be one of: [`multicast`, `unicast`, `pull`] where `multicast` and `unicast` define push queues
+
 If `push` field is defined, this queue will be created as a push queue and must contain at least one subscriber. Everything else in the push map is optional.
 
 A `push` queue cannot have alerts.
 
+
 ```json
 {
   "queue": {
-    "timeout": 60,
-    "push":{
-      "subscribers": [
-        {
-          "url": "http://mysterious-brook-1807.herokuapp.com/ironmq_push_1",
-          "headers": {"Content-Type": "application/json"}
-        }
-      ],
-      "retries": 3,
-      "retries_delay": 60,
-      "error_queue": "error_queue_name"
-    },
+    "message_timeout": 60,
+    "message_expiration": 3600,
+    "type": "pull/unicast/multicast",
+    "subscribers": [
+      {
+        "url": "http://mysterious-brook-1807.herokuapp.com/ironmq_push_1",
+        "headers": {"Content-Type": "application/json"}
+      }
+    ],
+    "retries": 3,
+    "retries_delay": 60,
+    "error_queue": "error_queue_name"
     "alerts": [
       {
        "type": "fixed",
@@ -122,22 +125,22 @@ there are no alerts.
   "queue": {
     "id": 123,
     "name": "my_queue",
-    "created_at": "2014-12-19T16:39:57-08:00",
-    "updated_at": "2014-12-19T16:39:57-08:00",
-    "timeout": 60,
-    "type": "pull/unicast/multicast",
-    "expire_time": 604800,
-    "push":{
-      "subscribers": [
-        {
-          "url": "http://mysterious-brook-1807.herokuapp.com/ironmq_push_1",
-          "headers": {"Content-Type": "application/json"}
-        }
-      ],
-      "retries": 3,
-      "retries_delay": 60,
-      "error_queue": "error_queue_name"
-    },
+    // "created_at": "2014-12-19T16:39:57-08:00",
+    // "updated_at": "2014-12-19T16:39:57-08:00",
+    "size": 0,
+    "total_messages": 0,
+    "message_timeout": 60,
+    "message_expiration": 604800,
+    "type": "pull",
+    "subscribers": [
+      {
+        "url": "http://mysterious-brook-1807.herokuapp.com/ironmq_push_1",
+        "headers": {"Content-Type": "application/json"}
+      }
+    ],
+    "retries": 3,
+    "retries_delay": 60,
+    "error_queue": "error_queue_name"
     "alerts": [
       {
         "type": "fixed",
@@ -194,7 +197,7 @@ Lists queues in alphabetical order.
 
 Request:
 
-- per_page - number of elements in response, default is 30.
+- per\_page - number of elements in response, default is 30.
 - previous - this is the last queue on the previous page, it will start from the next one. If queue with specified name doesn’t exist result will contain first `per_page` queues that lexicographically greater than `previous`
 
 Response: 200 or 404
@@ -209,12 +212,6 @@ there are no alerts.
 ```
 
 SAME AS GET QUEUE INFO
-
-
-
-
-
-
 
 ## Messages
 
