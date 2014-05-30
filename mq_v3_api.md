@@ -79,8 +79,6 @@ A `push` queue cannot have alerts.
 {
   "queue": {
     "timeout": 60,
-    "expires_in": 3600,
-    "type": "pull/unicast/multicast"
     "push":{
       "subscribers": [
         {
@@ -130,9 +128,8 @@ there are no alerts.
     "created_at": "2014-12-19T16:39:57-08:00",
     "updated_at": "2014-12-19T16:39:57-08:00",
     "timeout": 60,
-    "expires_in": 3600,
-    "expires_at": "2014-12-19T16:39:57-08:00",
     "type": "pull/unicast/multicast",
+    "expire_time": 604800,
     "push":{
       "subscribers": [
         {
@@ -223,25 +220,6 @@ there are no alerts.
 ```
 
 SAME AS GET QUEUE INFO
-
-### Delete Queue
-
-DELETE `/queues/{queue_id}`
-
-Request:
-
-```json
-{}
-```
-
-Response: 200 or 404
-
-```json
-{
-  "msg": "Queue deleted."
-}
-```
-
 
 
 
