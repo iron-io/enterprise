@@ -422,6 +422,13 @@ DELETE `/queues/{queue_name}/messages`
 
 This will remove all messages from a queue.
 
+
+Request:
+
+```json
+{}
+```
+
 Response: 200 or 404
 
 ```json
