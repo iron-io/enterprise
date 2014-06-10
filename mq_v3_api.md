@@ -66,7 +66,7 @@ Headers:
 
 ### Create Queue
 
-POST `/queues/{queue_name}`
+PUT `/queues/{queue_name}`
 
 Request:
 
@@ -183,7 +183,6 @@ Response: 200 or 404
   "msg": "Deleted"
 }
 ```
-
 
 ### List Queues
 
@@ -415,7 +414,6 @@ Response: 200 or 404
   "msg": "Released"
 }
 ```
-
 
 
 ### Clear Messages
