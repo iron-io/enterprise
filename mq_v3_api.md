@@ -278,11 +278,14 @@ Response: 200
        "id": "6000000706655000006",
        "body": "Hello World!",
        "reservation_id": "00ae00b00000ab0c00fdc000d0c00000",
-       "reserved_count": 1  // number of times this message has been reserved including current reservation
+       "reserved_count": 1
     }
   ]
 }
 ```
+
+- `reserved_count` - number of times this message has been reserved including current reservation.
+- `reservation_id` - should be used for touching, releasing or deleting of reserved message.
 
 Will return an empty array if no messages are available in queue.
 
@@ -301,7 +304,7 @@ there are no alerts.
   "message": {
     "id": 123,
     "body": "This is my message 1.",
-    "reserved_count": 1  // number of times this message has been reserved
+    "reserved_count": 1,
     "todo": "push related info"
   }
 }
