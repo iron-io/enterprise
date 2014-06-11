@@ -302,8 +302,9 @@ there are no alerts.
 ```json
 {
   "message": {
-    "id": 123,
-    "body": "This is my message 1.",
+    "id": "6000000706655000006",
+    "body": "Hello World!",
+    "reservation_id": "00ae00b00000ab0c00fdc000d0c00000",
     "reserved_count": 1,
     "todo": "push related info"
   }
@@ -327,7 +328,10 @@ there are no alerts.
 {
   "messages": [
     {
-       "TODO": "SAME AS GET MESSAGE BY ID"
+      "id": "6000000706655000006",
+      "body": "Hello World!",
+      "reserved_count": 1
+    }
   ]
 }
 ```
