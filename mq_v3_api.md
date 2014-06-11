@@ -275,8 +275,10 @@ Response: 200
 {
   "messages": [
     {
-       "TODO": "SAME AS GET MESSAGE BY ID plus:",
-       "reservation_id": "def456"
+       "id": "6000000706655000006",
+       "body": "Hello World!",
+       "reservation_id": "00ae00b00000ab0c00fdc000d0c00000",
+       "reserved_count": 1  // number of times this message has been reserved including current reservation
     }
   ]
 }
@@ -288,7 +290,7 @@ Will return an empty array if no messages are available in queue.
 
 GET `/queues/{queue_name}/messages/{message_id}`
 
-Response: 200
+Response: 200 or 404
 
 Some fields will not be included if they are not applicable like `push` if it's not a push queue and `alerts` if
 there are no alerts.
@@ -298,13 +300,8 @@ there are no alerts.
 {
   "message": {
     "id": 123,
-    "created_at": "2014-12-19T16:39:57-08:00",
-    "updated_at": "2014-12-19T16:39:57-08:00",
     "body": "This is my message 1.",
-    "delay": 0,
-    "reserved_until": "2014-12-19T16:39:57-08:00",
-    "reserved_count": 1,
-    "timeout": 60,
+    "reserved_count": 1  // number of times this message has been reserved
     "todo": "push related info"
   }
 }
