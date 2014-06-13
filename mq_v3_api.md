@@ -1,10 +1,5 @@
 ## Changes
 
-TODO: 
-batch delete
-peek
-webhook
-
 
 Changes from v2:
 
