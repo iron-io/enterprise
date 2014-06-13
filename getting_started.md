@@ -1,1 +1,1 @@
-This is at ironinstall/iron so it's included with the cli tool. 
+Go to: https://github.com/iron-io/enterprise/wiki/Installation
