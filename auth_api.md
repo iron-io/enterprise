@@ -11,42 +11,42 @@ not all fields are required, TODO document required fields
 
 ```
 <token> {
-  "\_id"
-  "user\_id"
+  "_id"
+  "user_id"
   "type"
   "name"
   "token"
-  "admin"               bool
+  "admin"                bool
 }
 ```
 
 ```
 <project> {
   "id"
-  "user\_id"
+  "user_id"
   "name"
   "type"
   "partner"
   "status"
-  "total\_duration"
-  "max\_schedules"
-  "schedules\_count"
-  "task\_count"
-  "hourly\_task\_count"
-  "hourly\_time"          time.Time
-  "flags"                 map[string]bool
-  "shared\_with"          []id
+  "total_duration"
+  "max_schedules"
+  "schedules_count"
+  "task_count"
+  "hourly_task\_count"
+  "hourly_time"          time.Time
+  "flags"                map[string]bool
+  "shared_with"          []id
 }
 ```
 
 ```
 <user> {
-  "user\_id"
+  "user_id"
   "email"
   "password"
   "tokens"                []string
   "status"
-  "plan\_worker"
+  "plan_worker"
   "flags"                 map[string]interface{}
 }
 ```
@@ -72,7 +72,7 @@ response: {
 code: 200 OR 403
 ```
 
-#### Login
+#### Login (for HUD)
 
 HEADER: application/json ( no token / oauth )
 
