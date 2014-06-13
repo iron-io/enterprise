@@ -17,7 +17,8 @@ cause some tests to fail.)
 - All object structures changed a bit, please review json.
 - Clear messages endpoint changed to be part of delete messages.
 - Can no longer set timeout when posting a message, only when reserving one.
-- webhook url is no longer /queues/{queue_name}/messages/webhook, it's now /queues/{queue_name}/webhook
+- Webhook url is no longer /queues/{queue_name}/messages/webhook, it's now /queues/{queue_name}/webhook
+- Pagination principle in List Queues changed. It doesn’t support `page` parameter. You should specify the name of queue prior to the first desirable queue in result.
 
 ## Contents
 
@@ -65,23 +66,26 @@ Headers:
 
 ### Create Queue
 
-POST `/queues/{queue_name}`
+PUT `/queues/{queue_name}`
 
 Request:
 
 All fields are optional.
 
+`type` can be one of: [`multicast`, `unicast`, `pull`] where `multicast` and `unicast` define push queues. default is `pull`
+
 If `push` field is defined, this queue will be created as a push queue and must contain at least one subscriber. Everything else in the push map is optional.
 
 A `push` queue cannot have alerts.
 
+
 ```json
 {
   "queue": {
-    "timeout": 60,
-    "expires_in": 3600,
-    "type": "pull/unicast/multicast"
-    "push":{
+    "message_timeout": 60,
+    "message_expiration": 3600,
+    "type": "pull/unicast/multicast",
+    "push": {
       "subscribers": [
         {
           "url": "http://mysterious-brook-1807.herokuapp.com/ironmq_push_1",
@@ -91,7 +95,7 @@ A `push` queue cannot have alerts.
       "retries": 3,
       "retries_delay": 60,
       "error_queue": "error_queue_name"
-    },
+    }
     "alerts": [
       {
        "type": "fixed",
@@ -113,10 +117,6 @@ SAME AS GET QUEUE INFO
 
 GET `/queues/{queue_name}`
 
-Request:
-
-{}
-
 Response: 200 or 404
 
 Some fields will not be included if they are not applicable like `push` if it's not a push queue and `alerts` if
@@ -125,15 +125,14 @@ there are no alerts.
 ```json
 {
   "queue": {
-    "id": 123,
+    "project_id": 123,
     "name": "my_queue",
-    "created_at": "2014-12-19T16:39:57-08:00",
-    "updated_at": "2014-12-19T16:39:57-08:00",
-    "timeout": 60,
-    "expires_in": 3600,
-    "expires_at": "2014-12-19T16:39:57-08:00",
+    "size": 0,
+    "total_messages": 0,
+    "message_timeout": 60,
+    "message_expiration": 604800,
     "type": "pull/unicast/multicast",
-    "push":{
+    "push": {
       "subscribers": [
         {
           "url": "http://mysterious-brook-1807.herokuapp.com/ironmq_push_1",
@@ -177,20 +176,13 @@ SAME AS GET QUEUE INFO
 
 DELETE `/queues/{queue_id}`
 
-Request:
-
-```json
-{}
-```
-
 Response: 200 or 404
 
 ```json
 {
-  "msg": "Queue deleted."
+  "msg": "Deleted"
 }
 ```
-
 
 ### List Queues
 
@@ -198,56 +190,24 @@ GET `/queues`
 
 Lists queues in alphabetical order.
 
-Query Parameters:
+Request URL Query Parameters:
 
-- per_page - TODO: what's default?
-- previous - this is the last queue on the previous page, it will start from the next one.
-
-Request:
-
-```json
-{
-}
-```
-
+- per\_page - number of elements in response, default is 30.
+- previous - this is the last queue on the previous page, it will start from the next one. If queue with specified name doesn’t exist result will contain first `per_page` queues that lexicographically greater than `previous`
 
 Response: 200 or 404
 
-Some fields will not be included if they are not applicable like `push` if it's not a push queue and `alerts` if
-there are no alerts.
-
 ```json
 {
-  "queues": [ "list of queues with same info as get queue info" ]
+  "queues": [ 
+    {
+      "name": "queue_name_here"
+    },
+  ]
 }
 ```
 
 SAME AS GET QUEUE INFO
-
-### Delete Queue
-
-DELETE `/queues/{queue_id}`
-
-Request:
-
-```json
-{}
-```
-
-Response: 200 or 404
-
-```json
-{
-  "msg": "Queue deleted."
-}
-```
-
-
-
-
-
-
-
 
 ## Messages
 
@@ -262,9 +222,8 @@ Request:
   "messages": [
     {
       "body": "This is my message 1.",
-      "delay": 0,
-      "timeout": "todo: this may be a queue level thing now?"
-    }
+      "delay": 0
+    },
   ]
 }
 ```
@@ -276,9 +235,9 @@ Returns a list of message ids in the same order as they were sent in.
 ```json
 {
   "ids": [
-    "abc123"
+    "2605601678238811215"
   ],
-  "msg": "Messages posted to queue."
+  "msg": "Messages put on queue."
 }
 ```
 
@@ -307,9 +266,11 @@ Response: 200
 {
   "messages": [
     {
-       "TODO": "SAME AS GET MESSAGE BY ID plus:",
+       "id": 123,
+       "body": "this is the body",
+       "reserved_count": 1,
        "reservation_id": "def456"
-    }
+    },
   ]
 }
 ```
@@ -320,30 +281,16 @@ Will return an empty array if no messages are available in queue.
 
 GET `/queues/{queue_name}/messages/{message_id}`
 
-Request:
-
-```json
-{}
-```
-
 Response: 200
 
-Some fields will not be included if they are not applicable like `push` if it's not a push queue and `alerts` if
-there are no alerts.
-
+TODO push queue info ?
 
 ```json
 {
   "message": {
     "id": 123,
-    "created_at": "2014-12-19T16:39:57-08:00",
-    "updated_at": "2014-12-19T16:39:57-08:00",
     "body": "This is my message 1.",
-    "delay": 0,
-    "reserved_until": "2014-12-19T16:39:57-08:00",
-    "reserved_count": 1,
-    "timeout": 60,
-    "todo": "push related info"
+    "reserved_count": 1
   }
 }
 ```
@@ -354,9 +301,7 @@ GET `/queues/{queue_name}/messages`
 
 Request:
 
-```json
-{}
-```
+- n: The maximum number of messages to peek. Default is 1. Maximum is 100. Note: You may not receive all n messages on every request, the more sparse the queue, the less likely you are to receive all n messages.
 
 Response: 200
 
@@ -367,7 +312,10 @@ there are no alerts.
 {
   "messages": [
     {
-       "TODO": "SAME AS GET MESSAGE BY ID"
+       "id": 123,
+       "body": "message body",
+       "reserved_count": 1
+    },
   ]
 }
 ```
@@ -406,13 +354,13 @@ Request:
 
 - reservation_id: This id is returned when you [reserve a message](#reserve-messages) and must be provided to delete a message that is reserved. If a reservation times out, this will return an error when deleting so the worker knows that some other worker will be processing this message and can rollback or react accordingly.
 
-TODO: should reservation_id be optional? if not included, a message can be deleted as long as it's not reserved. This is how marconi works.
-
 ```json
 {
   "ids": [
-    "id": 123,
-    "reservation_id": "abc"
+    {
+      "id": 123,
+      "reservation_id": "abc"
+    },
   ]
 }
 ```
@@ -421,13 +369,59 @@ Response: 200 or 404
 
 ```json
 {
-  "msg": "Messages deleted."
+  "msg": "Deleted."
 }
 ```
 
 ### Touch Message
 
-DELETE `/queues/{queue_name}/messages/{message_id}/touch`
+POST `/queues/{queue_name}/messages/{message_id}/touch`
+
+Request:
+
+```json
+{
+  "reservation_id": "5259a40cf166faa76a23f7450daaf497"
+}
+```
+
+Response: 200 or 404
+
+```json
+{
+  "msg": "Touched"
+}
+```
+
+
+### Release Message
+
+POST `/queues/{queue_name}/messages/{message_id}/release`
+
+Request:
+
+```json
+{
+  "reservation_id": "5259a40cf166faa76a23f7450daaf497",
+  "delay": 60
+}
+```
+
+Response: 200 or 404
+
+```json
+{
+  "msg": "Released"
+}
+```
+
+
+### Clear Messages
+
+DELETE `/queues/{queue_name}/messages`
+
+This will remove all messages from a queue.
+
 
 Request:
 
@@ -439,51 +433,6 @@ Response: 200 or 404
 
 ```json
 {
-  "msg": "Message touched."
-}
-```
-
-
-### Release Message
-
-DELETE `/queues/{queue_name}/messages/{message_id}/release`
-
-Request:
-
-```json
-{
-  "delay": 60
-}
-```
-
-Response: 200 or 404
-
-```json
-{
-  "msg": "Message released."
-}
-```
-
-
-
-### Clear Messages
-
-DELETE `/queues/{queue_name}/messages`
-
-This will remove all messages from a queue.
-
-Request:
-
-```json
-{
-
-}
-```
-
-Response: 200 or 404
-
-```json
-{
-  "msg": "Queue cleared."
+  "msg": "Cleared"
 }
 ```
