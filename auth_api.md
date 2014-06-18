@@ -128,6 +128,18 @@ response: {
 ```
 
 ```
+GET /1/users
+
+URL query params:
+  "previous" : to paginate, the id of the last user from the last page; if not specified, will start from beginning.
+  "per_page" : size of the list to return. Default: 30, max: 100
+
+response: {
+  []<user>
+}
+```
+
+```
 GET /1/users/{user_id_or_email}
 
 response: {
