@@ -135,7 +135,9 @@ URL query params:
   "per_page" : size of the list to return. Default: 30, max: 100
 
 response: {
-  []<user>
+  "users": [
+    <user1>, <user2>, ...
+  ]
 }
 ```
 
