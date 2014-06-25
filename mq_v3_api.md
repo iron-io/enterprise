@@ -189,6 +189,7 @@ Request URL Query Parameters:
 
 - per\_page - number of elements in response, default is 30.
 - previous - this is the last queue on the previous page, it will start from the next one. If queue with specified name doesn’t exist result will contain first `per_page` queues that lexicographically greater than `previous`
+- prefix - an optional queue prefix to search on. e.g., prefix=ca could return queues ["cars", "cats", etc.]
 
 Response: 200 or 404
 
@@ -201,8 +202,6 @@ Response: 200 or 404
   ]
 }
 ```
-
-SAME AS GET QUEUE INFO
 
 ## Messages
 
@@ -247,11 +246,15 @@ All fields are optional.
 
 - n: The maximum number of messages to get. Default is 1. Maximum is 100. Note: You may not receive all n messages on every request, the more sparse the queue, the less likely you are to receive all n messages.
 - timeout:  After timeout (in seconds), item will be placed back onto queue. You must delete the message from the queue to ensure it does not go back onto the queue. If not set, value from queue is used. Default is 60 seconds, minimum is 30 seconds, and maximum is 86,400 seconds (24 hours).
+- wait: Time to long poll for messages, in seconds. Max is 30 seconds. Default 0.
+- delete: If true, do not put each message back on to the queue after reserving. Default false.
 
 ```json
 {
   "n": 1,
-  "timeout": 60
+  "timeout": 60,
+  "wait": 0,
+  "delete": false
 }
 ```
 
@@ -285,7 +288,8 @@ TODO push queue info ?
   "message": {
     "id": 123,
     "body": "This is my message 1.",
-    "reserved_count": 1
+    "reserved_count": 1,
+    "reservation_id": "abcdefghijklmnop"
   }
 }
 ```
