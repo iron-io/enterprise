@@ -32,7 +32,7 @@ not all fields are required, TODO document required fields
   "max_schedules"
   "schedules_count"
   "task_count"
-  "hourly_task\_count"
+  "hourly_task_count"
   "hourly_time"          time.Time
   "flags"                map[string]bool
   "shared_with"          []id
@@ -41,13 +41,49 @@ not all fields are required, TODO document required fields
 
 ```
 <user> {
-  "user_id"
-  "email"
-  "password"
+  "user_id"               bson.ObjectId
+  "email"                 string
+  "password"              string [input only]
   "tokens"                []string
-  "status"
-  "plan_worker"
+  "status"                string
+  "plan_worker"           <plan_worker>
+  "plan_mq"               <plan_mq>
   "flags"                 map[string]interface{}
+}
+```
+
+```
+<plan_worker> {
+  "concurrent_workers"    int
+  "max_timeout"           int
+  "free"                  bool
+  "keep_task_priority"    bool
+  "clusters"              []string
+  "scheduled_jobs"        int
+}
+```
+
+```
+<plan_mq> {
+  "message_size"          int [in kilobytes]
+  "level"                 <level>
+  "clusters"              []string [dedicated cluster tags]
+}
+```
+
+```
+<level> enum {
+  "normal"                // user can see all normal
+  "pro"                   // user can see normal U pro
+  "dedicated"             // user can see normal U pro U specially assigned
+}
+```
+
+```
+<cluster> {
+  "tag"                   string [instance's unique identifier, human friendly]
+  "url"                   string
+  "level"                 <level>
 }
 ```
 
@@ -205,4 +241,37 @@ PATCH /1/projects/{project_id}/unshare
 request: {
   []user_id
 }
+```
 
+
+### clusters
+
+```
+GET /1/clusters
+
+response: {
+  [ <cluster>... ]
+}
+```
+
+admin only put / delete clusters:
+
+```
+PUT /1/clusters/{tag}
+
+request: {
+  <cluster>
+}
+
+response: {
+  "msg": ["ok","error"]
+}
+```
+
+```
+DELETE /1/clusters/{tag}
+
+response: {
+  "msg": ["deleted","error"]
+}
+```
