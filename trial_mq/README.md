@@ -17,6 +17,7 @@ If you have an Amazon Web Services account, you can try IronMQ locally with this
   "coreos_discovery_url": ""
 }
 ```
+3. Execute the `new_coreos_disco.sh` script.  Note: this will fill the "coreos_discovery_url" key in the `terraform.tfvars.json` file.
 3. Run `terraform plan -out=plan -var-file=terraform.tfvars.json`
 4. Review the plan displayed in the console
 5. Run `terraform apply plan`
