@@ -1,7 +1,7 @@
-Trial IronMQ with Terraform
-===========================
+Automated Deployment with Terraform
+===================================
 
-If you have an Amazon Web Services account, you can try IronMQ locally with this Terraform script.
+If you have an Amazon Web Services account, you can automatically provision an IronMQ cluster there using these Terraform scripts.
 
 1. Download and install Terraform: https://terraform.io/downloads.html
 2. Create a `terraform.tfvars.json` file with your credentials and an empty `"coreos_discovery_url"` key:
