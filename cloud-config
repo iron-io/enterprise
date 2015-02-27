@@ -1,0 +1,64 @@
+#cloud-config
+
+write_files:
+  - path: /etc/modules-load.d/nf.conf
+    content: |
+      nf_conntrack
+      nf_conntrack_ipv4
+  - path: /etc/sysctl.d/nf.conf
+    permissions: 0644
+    owner: root
+    content: |
+      net.netfilter.nf_conntrack_tcp_timeout_established = 600
+      net.netfilter.nf_conntrack_generic_timeout = 60
+      net.netfilter.nf_conntrack_tcp_timeout_unacknowledged = 30
+      net.netfilter.nf_conntrack_max=524288
+  - path: /etc/systemd/system/docker.service.d/increase-ulimit.conf
+    owner: core:core
+    permissions: 0644
+    content: |
+      [Service]
+      LimitMEMLOCK=infinity
+      LimitNOFILE=262144
+
+coreos:
+  update:
+    reboot-strategy: off
+  etcd:
+    # TODO YOU MUST REPLACE THIS FOR EACH INSTALL
+    discovery: https://discovery.etcd.io/{TODO_GET_A_NEW_ONE}
+    addr: $private_ipv4:4001
+    peer-addr: $private_ipv4:7001
+  fleet:
+    public-ip: $public_ipv4
+  units:
+    - name: docker.service
+      command: restart # restart docker for new ulimits
+    - name: etcd.service
+      command: start
+    - name: fleet.service
+      command: start
+    - name: systemd-modules-load.service
+      command: restart
+    - name: systemd-sysctl.service
+      command: restart
+    - name: mnt.mount
+      command: start
+      content: |
+        [Mount]
+        What=/dev/xvdb
+        Where=/mnt
+        Type=ext4
+    - name: irondata.service
+      command: start
+      content: |
+        [Unit]
+        Description=Volume for persistent iron service data and configs
+        After=docker.service
+        After=mnt.mount
+
+        [Service]
+        TimeoutStartSec=0
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=/usr/bin/docker run -name irondata -v /mnt/data:/ironmq/data busybox true
