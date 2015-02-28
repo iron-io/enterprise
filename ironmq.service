@@ -1,0 +1,19 @@
+[Unit]
+Description=IronMQ
+After=docker.service
+Requires=docker.service
+
+[Service]
+User=core
+EnvironmentFile=/etc/environment
+Restart=on-failure
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill ironmq
+ExecStartPre=-/usr/bin/docker rm ironmq
+ExecStartPre=/usr/bin/docker pull iron/mq
+ExecStartPre=/usr/bin/etcdctl set "/ironmq/peers/${COREOS_PRIVATE_IPV4}:8080" "${COREOS_PRIVATE_IPV4}:8080"
+ExecStart=/usr/bin/bash -c '/usr/bin/docker run --net=host --name ironmq --volumes-from irondata -p 8080:8080 -p 8081:8081 -p 8082:8082 -e CONFIG_JSON="`/usr/bin/etcdctl get /ironmq/config.json`" -e LEVELDB_CONFIG_COHOSTS=`/usr/bin/etcdctl ls /ironmq/peers | /usr/bin/xargs -n 1 etcdctl get | /usr/bin/sed -e "s/\(.*\)/\\"\\1\\"/" | /usr/bin/paste -sd "," - | /usr/bin/sed -e "s/\(.*\)/[\1]/"` iron/mq'
+ExecStop=/usr/bin/docker stop ironmq
+
+[X-Fleet]
+Global=true

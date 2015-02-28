@@ -1,0 +1,19 @@
+[Unit]
+Description=IronAuth
+After=docker.service
+Requires=docker.service
+
+[Service]
+User=core
+EnvironmentFile=/etc/environment
+TimeoutStartSec=0
+Restart=on-failure
+ExecStartPre=-/usr/bin/docker kill ironauth
+ExecStartPre=-/usr/bin/docker rm ironauth
+ExecStartPre=/usr/bin/docker pull iron/auth
+ExecStartPre=/usr/bin/etcdctl set "/ironauth/peers/${COREOS_PRIVATE_IPV4}:8090" "${COREOS_PRIVATE_IPV4}:8090"
+ExecStart=/usr/bin/bash -c '/usr/bin/docker run --net=host --name ironauth --volumes-from irondata -p 8090:8090 -p 8091:8091 -p 8092:8092 -e CONFIG_JSON="`/usr/bin/etcdctl get /ironauth/config.json`" -e DATACONFIG_COHOSTS=`/usr/bin/etcdctl ls /ironauth/peers | /usr/bin/xargs -n 1 etcdctl get | /usr/bin/sed -e "s/\(.*\)/\\"\\1\\"/" | /usr/bin/paste -sd "," - | /usr/bin/sed -e "s/\(.*\)/[\1]/"` iron/auth'
+ExecStop=/usr/bin/docker stop ironauth
+
+[X-Fleet]
+Global=true
