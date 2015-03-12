@@ -205,4 +205,48 @@ PATCH /1/projects/{project_id}/unshare
 request: {
   []user_id
 }
+```
+
+#### Sharing
+
+```
+GET /1/projects/{project_id}/share
+
+response: {
+  msg: "project collaborators retrieved",
+  users: [
+    {
+      user_id: "ID",
+      email: "EMAIL",
+      owner: true
+    }
+  ]
+}
+```
+
+```
+PATCH /1/projects/{project_id}/share
+
+request: {
+  email:  <insert user email>
+}
+
+response: {
+  msg: success/fail
+}
+```
+
+```
+PATCH /1/projects/{project_id}/unshare
+
+request: {
+  email:  <insert user email>
+}
+
+response: {
+  msg: success/fail
+}
+```
+
+
 
