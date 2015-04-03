@@ -6,9 +6,13 @@
   "api": {
     "http_port": 8080
   },
-  "auth_description":"remove auth section for no auth",
   "auth": {
     "host": "http://localhost:8090"
+  },
+  "logging": {
+    "to": "",
+    "level": "info",
+    "prefix": ""
   },
   "pusher": {
     "num_queues_brokers": 10,
@@ -25,5 +29,20 @@
     "dir": "../data",
     "cache_size_description": "Size of cache in MB -- don't get carried away",
     "cache_size": 128
+  },
+  "stats": {
+    "interval":0,
+    "DataDog" : {
+      "target": "",
+      "threshold":0
+    },
+    "NewRelic" : {
+        "license_key" : ""
+    },
+    "stathat":{
+      "email":"",
+      "prefix":""
+    },
+    "Log15":[]
   }
 }
