@@ -378,17 +378,23 @@ POST `/queues/{queue_name}/messages/{message_id}/touch`
 
 Request:
 
+optional "timeout", will default to queue's setting.
+
 ```json
 {
-  "reservation_id": "5259a40cf166faa76a23f7450daaf497"
+  "reservation_id": "5259a40cf166faa76a23f7450daaf497",
+  "timeout": 120
 }
 ```
+
+returns an updated "reservation\_id" upon success
 
 Response: 200 or 404
 
 ```json
 {
-  "msg": "Touched"
+  "msg": "Touched",
+  "reservation_id": "5259a40cf166faa76a23f7450daaf498"
 }
 ```
 
