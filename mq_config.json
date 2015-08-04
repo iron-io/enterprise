@@ -14,13 +14,10 @@
     "level": "info",
     "prefix": ""
   },
-  "pusher": {
-    "num_queues_brokers": 10,
-    "num_messages_consumers": 50,
-    "dial_timeout": 10,
-    "request_timeout": 60,
-    "num_dequeue_messages": 3,
-    "base_url": "http://localhost:8080"
+  "push" : {
+    "api_host": "http://localhost:8080",
+    "base_url": "http://localhost:8080",
+    "auth_token":"adminToken"
   },
   "data": {
     "aes_key_description": "Key for generating id's.",
