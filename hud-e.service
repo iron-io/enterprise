@@ -10,5 +10,5 @@ Restart=on-failure
 ExecStartPre=-/usr/bin/docker kill hud-e
 ExecStartPre=-/usr/bin/docker rm hud-e
 ExecStartPre=/usr/bin/docker pull iron/hud-e
-ExecStart=/usr/bin/docker run --name hud-e -p 3000:3000 --net=host -e IRON_AUTH_URL=localhost:8090 -e SECRET_KEY_BASE=$RANDOM_STRING iron/hud-e
+ExecStart=/usr/bin/docker run --name hud-e -p 3000:80 --net=host -e IRON_AUTH_URL=localhost:8090 -e SECRET_KEY_BASE=$RANDOM_STRING iron/hud-e
 ExecStop=/usr/bin/docker stop hud-e
